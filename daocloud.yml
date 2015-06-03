@@ -1,0 +1,9 @@
+image: node
+
+services:
+  - mongodb
+
+script:
+  - git clone https://git.coding.net/nggather/test.git
+  - cd sites 
+  - npm install --production
