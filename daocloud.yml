@@ -5,6 +5,3 @@ services:
 
 env:
  - SHANG_ENV = SHANG
-
-script:
-  - npm install hexo -g
