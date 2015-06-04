@@ -3,7 +3,8 @@ image: node
 services:
   - mongodb
 
+env:
+ - SHANG_ENV = SHANG
+
 script:
-  - git clone https://git.coding.net/nggather/test.git
-  - cd sites 
-  - npm install --production
+  - npm install hexo -g
