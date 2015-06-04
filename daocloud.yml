@@ -7,7 +7,6 @@ env:
  - SHANG_ENV = SHANG
 
 script:
- - pwd
  - cd sites
  - npm install
  - node app.js

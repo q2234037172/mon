@@ -18,6 +18,7 @@ try {
         process.env.MONGODB_PORT_27017_TCP_ADDR + ":" + process.env.MONGODB_PORT_27017_TCP_PORT + '/' + process.env.MONGODB_INSTANCE_NAME;
 } catch (e) {}
 
+console.log(mongodbUri)
 
 var db = mongoose.connect(mongodbUri);
 
