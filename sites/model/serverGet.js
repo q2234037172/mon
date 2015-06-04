@@ -1,7 +1,7 @@
 var request = require('request');
-var cheerio = require("cheerio");    //jq操作DOM
-var iconv = require('iconv-lite');    //解决编码转换模块
-var BufferHelper = require('bufferhelper');   // bufferHelper.concat(chunk);
+var cheerio = require("cheerio"); //jq操作DOM
+var iconv = require('iconv-lite'); //解决编码转换模块
+var BufferHelper = require('bufferhelper'); // bufferHelper.concat(chunk);
 var q = require('q');
 var moment = require('moment');
 
@@ -53,15 +53,14 @@ function getImg(req, res) {
     var url = req.query.imgurl;
     if (!url) {
         res.send(404);
-    }
-    else {
+    } else {
         request.get(url).pipe(res);
     }
 }
 
 function getInfo(req, res) {
     var start = parseInt(req.query.start || 0);
-    res.send(dataCache.slice(start, start + 20));
+    res.send(dataCache.slice(start, start + 10));
 }
 
 function getLatest(req, res) {
@@ -69,8 +68,7 @@ function getLatest(req, res) {
         .then(function(result) {
             if (result) {
                 res.send(500);
-            }
-            else {
+            } else {
                 res.send(dataCache.slice(0, 20));
             }
         })
@@ -103,7 +101,8 @@ function crawlerSites() {
 function uniq2Arr(arr1, arr2) {
     var temp = [];
     var temparray = [];
-    var i = 0, l = 0;
+    var i = 0,
+        l = 0;
     for (i = 0; i < arr2.length; i++) {
         temp[arr2[i].href] = true;
     }
@@ -112,7 +111,7 @@ function uniq2Arr(arr1, arr2) {
         arr1[i].gatherTime = new Date().getTime() + l - i;
         if (!temp[arr1[i].href]) {
             temparray.push(arr1[i]);
-        }   // 采集时间和文章发布时间在24小时内[其实只需要30min内]可以进行判断是否为更新文章
+        } // 采集时间和文章发布时间在24小时内[其实只需要30min内]可以进行判断是否为更新文章
         else if (arr1[i].gatherTime - arr1[i].time < 24 * 60 * 60 * 1000) {
             dealSameHref(arr1[i]);
         }
@@ -159,46 +158,45 @@ function httpGet(siteInfo) {
         if (error) {
             console.log('reject');
             deferred.reject();
-        }
-        else {
+        } else {
             var $ = cheerio.load(changeEncoding(body));
             var list = [];
             console.log(siteInfo.name);
             switch (siteInfo.name) {
                 case 'zd':
-                {
-                    list = captureZDList($);
-                    saveList('zd', list);
-                    break;
-                }
+                    {
+                        list = captureZDList($);
+                        saveList('zd', list);
+                        break;
+                    }
                 case 'iqq':
-                {
-                    list = captureIQQ($);
-                    saveList('iqq', list);
-                    break;
-                }
+                    {
+                        list = captureIQQ($);
+                        saveList('iqq', list);
+                        break;
+                    }
                 case 'ccav':
-                {
-                    list = captureCCAV($);
-                    saveList('ccav', list);
-                    break;
-                }
+                    {
+                        list = captureCCAV($);
+                        saveList('ccav', list);
+                        break;
+                    }
                 case 'llm':
-                {
-                    list = captureLLM($);
-                    saveList('llm', list);
-                    break;
-                }
+                    {
+                        list = captureLLM($);
+                        saveList('llm', list);
+                        break;
+                    }
                 case 'qiuquan':
-                {
-                    list = captureQIUQUAN($);
-                    saveList('qiuquan', list);
-                    break;
-                }
+                    {
+                        list = captureQIUQUAN($);
+                        saveList('qiuquan', list);
+                        break;
+                    }
                 default:
-                {
-                    list = [];
-                }
+                    {
+                        list = [];
+                    }
             }
             deferred.resolve(list);
         }
@@ -319,20 +317,15 @@ function changeEncoding(data, encoding) {
 function calculateTime(timeStr) {
     if (/天前/.test(timeStr)) {
         timeNu = new Date(new Date() - parseInt(timeStr) * 24 * 60 * 60 * 1000);
-    }
-    else if (/小时前/.test(timeStr)) {
+    } else if (/小时前/.test(timeStr)) {
         timeNu = new Date(new Date() - parseInt(timeStr) * 60 * 60 * 1000);
-    }
-    else if (/周前/.test(timeStr)) {
+    } else if (/周前/.test(timeStr)) {
         timeNu = new Date(new Date() - parseInt(timeStr) * 7 * 24 * 60 * 60 * 1000);
-    }
-    else if (/月前/.test(timeStr)) {
+    } else if (/月前/.test(timeStr)) {
         timeNu = new Date(new Date() - parseInt(timeStr) * 30 * 24 * 60 * 60 * 1000);
-    }
-    else if (/年前/.test(timeStr)) {
+    } else if (/年前/.test(timeStr)) {
         timeNu = new Date(new Date() - parseInt(timeStr) * 365 * 24 * 60 * 60 * 1000);
-    }
-    else {
+    } else {
         timeNu = timeStr;
     }
     return timeNu;
@@ -351,7 +344,7 @@ function databaseOperate() {
                     intro: data[i].intro,
                     site: data[i].site,
                     currentTime: data[i].currentTime || 0,
-                    gatherTime: data[i].currentTime || 0        // 新加
+                    gatherTime: data[i].currentTime || 0 // 新加
                 };
                 dataQuery.update(obj).then(function(doc) {
                     console.log(doc);
