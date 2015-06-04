@@ -1,5 +1,5 @@
 FROM node
-
+MAINTAINER SHANG xinshangshangxin@gmail.com
 # Build app
 RUN mkdir -p /usr/src/app
 WORKDIR /usr/src/app
