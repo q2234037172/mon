@@ -8,5 +8,6 @@ env:
 
 script:
  - pwd
+ - cd sites
  - npm install
- - node sites/app.js
+ - node app.js
