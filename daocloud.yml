@@ -5,3 +5,6 @@ services:
 
 env:
  - SHANG_ENV = SHANG
+
+script:
+ - node -v
