@@ -7,4 +7,5 @@ env:
  - SHANG_ENV = SHANG
 
 script:
- - node mon/sites/app.js
+ - pwd
+ - node sites/app.js
